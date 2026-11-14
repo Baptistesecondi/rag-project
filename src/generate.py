@@ -29,6 +29,10 @@ def extractive_answer(hits: list[tuple[Chunk, float]]) -> str:
         lines.append(f"\n[{i}] {chunk.text}")
     return "\n".join(lines)
 
+def extract_text(content) -> str:
+    """Keep only the text blocks of a response (the model may also return thinking blocks)."""
+    text = "".join(block.text for block in content if getattr(block, "type", None) == "text")
+    return text.strip() or "The model returned no text answer."
 
 def answer(question: str, hits: list[tuple[Chunk, float]], model: str | None = None) -> str:
     api_key = os.environ.get("ANTHROPIC_API_KEY")
@@ -40,7 +44,7 @@ def answer(question: str, hits: list[tuple[Chunk, float]], model: str | None = N
     client = anthropic.Anthropic(api_key=api_key)
     response = client.messages.create(
         model=model or os.environ.get("RAG_MODEL", DEFAULT_MODEL),
-        max_tokens=500,
+        max_tokens=2000,
         messages=[{"role": "user", "content": build_prompt(question, hits)}],
     )
-    return response.content[0].text
+    return extract_text(response.content)

@@ -6,7 +6,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "src"))
 
 from evaluate import hit_rank  # noqa: E402
-from generate import build_prompt, extractive_answer  # noqa: E402
+from generate import build_prompt, extract_text, extractive_answer  
 from ingest import Chunk, build_chunks, chunk_text  # noqa: E402
 from retrieve import BM25Index, tokenize  # noqa: E402
 
@@ -81,6 +81,12 @@ class PromptTests(unittest.TestCase):
         prompt = build_prompt("What colour is the sky?", hits)
         self.assertIn("[1] (a.md) the sky is blue", prompt)
         self.assertIn("Question: What colour is the sky?", prompt)
+
+    def test_extract_text_skips_thinking_blocks(self):
+        from types import SimpleNamespace as Block
+
+        content = [Block(type="thinking", thinking="..."), Block(type="text", text="China [1].")]
+        self.assertEqual(extract_text(content), "China [1].")
 
     def test_extractive_fallback_shows_passages(self):
         hits = [(Chunk("a.md", 0, "the sky is blue"), 1.0)]
