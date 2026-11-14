@@ -1,0 +1,2 @@
+# Optional: only needed for LLM-generated answers. The retrieval code has no dependencies.
+anthropic>=0.40

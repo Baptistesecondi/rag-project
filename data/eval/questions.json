@@ -1,0 +1,81 @@
+{
+  "questions": [
+    {
+      "question": "What are the four layers of the US Global Operating Model?",
+      "expected": ["us_2018_DefenseStrategy"],
+      "answer": "Contact, blunt, surge and homeland."
+    },
+    {
+      "question": "How is the Chinese navy shifting its focus beyond offshore waters?",
+      "expected": ["china_2015_MilitaryStrategy"],
+      "answer": "From offshore waters defense alone to a combination with open seas protection."
+    },
+    {
+      "question": "How much were British defence exports worth in 2015?",
+      "expected": ["unitedkingdom_2017_InternationalDefenceEngagementStrategy"],
+      "answer": "7.7 billion pounds."
+    },
+    {
+      "question": "Why must Spain keep defence costs low during the economic crisis?",
+      "expected": ["spain_2012_NationalDefenceDirective"],
+      "answer": "Austerity is a national imperative; defence must act efficiently at the lowest cost to society."
+    },
+    {
+      "question": "Which countries host the bases of the French military operation in the Sahel?",
+      "expected": ["france_2017_DefenseAndNationalSecurityStrategicReview"],
+      "answer": "Operation Barkhane relies on facilities in Chad, Mali and Niger."
+    },
+    {
+      "question": "What new area of confrontation involves undersea cables?",
+      "expected": ["france_2021_StrategicUpdate"],
+      "answer": "The seabed (seabed warfare), with submarine cables as a key issue."
+    },
+    {
+      "question": "What corollary to the Monroe Doctrine does the US assert for the Western Hemisphere?",
+      "expected": ["us_2025_NationalSecurityStrategy"],
+      "answer": "A Trump Corollary to the Monroe Doctrine."
+    },
+    {
+      "question": "Which chemical weapon attack on British soil is described as an act of aggression?",
+      "expected": ["unitedkingdom_2018_NationalSecurityCapabilityReview"],
+      "answer": "The attempted murder in Salisbury using an illegal chemical weapon."
+    },
+    {
+      "question": "Which country is the pacing challenge for the US Department of Defense?",
+      "expected": ["us_2022_NationalDefenseStrategy"],
+      "answer": "The People's Republic of China."
+    },
+    {
+      "question": "How many personnel did the PLA cut to keep two million active troops?",
+      "expected": ["china_2019_NationalDefense"],
+      "answer": "300,000 personnel."
+    },
+    {
+      "question": "Which autonomous cities in North Africa belong to the Spanish state?",
+      "expected": ["spain_2013_NationalSecurityStrategy", "spain_2021_NationalSecurityStrategy"],
+      "answer": "Ceuta and Melilla."
+    },
+    {
+      "question": "What role does the Covid-19 pandemic play in Spain's 2021 security strategy?",
+      "expected": ["spain_2021_NationalSecurityStrategy"],
+      "answer": "It accelerated the main global dynamics affecting security."
+    },
+    {
+      "question": "Which missile defense shield does the US want to build over its homeland?",
+      "expected": ["us_2025_NationalSecurityStrategy"],
+      "answer": "A Golden Dome."
+    },
+    {
+      "question": "When did the UK open its centre for training defence attaches?",
+      "expected": ["unitedkingdom_2016_NationalSecurityStrategy", "unitedkingdom_2017_InternationalDefenceEngagementStrategy"],
+      "answer": "The Defence Attache and Loan Service Centre opened in April 2016."
+    }
+  ],
+  "off_topic": [
+    "recipe for chocolate cake",
+    "football world cup results",
+    "best pizza in Naples",
+    "stock market prices today",
+    "how to train for a marathon"
+  ]
+}
