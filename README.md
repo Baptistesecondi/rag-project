@@ -23,6 +23,64 @@ A minimum score threshold filters off-topic questions. It was calibrated on the 
 | **8 (default)** | **86 %** | **4/5** |
 | 15 | 71 % | 5/5 |
 
+## Example
+
+Answers generated with Claude Haiku 5.5 from the retrieved passages.
+
+### 1. A direct factual question
+
+```
+$ python src/cli.py "Which country is the pacing challenge for the US Department of Defense?"
+
+The People's Republic of China (PRC) is the Department of Defense's pacing challenge [2][3].
+
+Sources:
+[1] us_2022_NationalDefenseStrategy.txt (chunk 2, score 16.66)
+[2] us_2022_NationalDefenseStrategy.txt (chunk 6, score 16.66)
+[3] us_2022_NationalDefenseStrategy.txt (chunk 1, score 14.53)
+```
+
+### 2. Irrelevant passages are ignored
+
+The two French passages retrieved in positions 2 and 3 are off-topic, and the model does not use them.
+
+```
+$ python src/cli.py "What are the four layers of the US Global Operating Model?"
+
+The four layers of the U.S. Global Operating Model are contact, blunt, surge, and homeland [1].
+According to the source, they are designed to help the U.S. compete more effectively below the
+level of armed conflict (contact); delay, degrade, or deny adversary aggression (blunt); surge
+war-winning forces and manage conflict escalation (surge); and defend the U.S. homeland
+(homeland) [1].
+
+Sources:
+[1] us_2018_DefenseStrategy.txt (chunk 22, score 22.82)
+[2] france_2013_DefenseWhitePaper.txt (chunk 188, score 11.54)
+[3] france_2013_DefenseWhitePaper.txt (chunk 7, score 10.88)
+```
+
+### 3. Retrieval misses the expected document
+
+The expected source (France 2021) talks about *seabed warfare* and *submarine cables*, so BM25 does not retrieve it. The model stays grounded in the passages it receives and flags its interpretation instead of inventing an answer.
+
+```
+$ python src/cli.py "What new area of confrontation involves undersea cables?"
+
+The sources point to maritime areas. Maritime areas are subject to rising tensions because of
+their key role in globalisation, including data flows carried by undersea cables [1]. The
+sources don't use the phrase "new area of confrontation," so this is my reading of what they
+describe.
+
+Undersea cables also appear as a vulnerability. Threats from third-party interference can
+extend to digital infrastructure such as undersea cables [2]. More broadly, competition over
+global commons, including sea, is intensifying [3].
+
+Sources:
+[1] france_2017_DefenseAndNationalSecurityStrategicReview.txt (chunk 95, score 14.50)
+[2] spain_2021_NationalSecurityStrategy.txt (chunk 24, score 12.44)
+[3] france_2017_DefenseAndNationalSecurityStrategicReview.txt (chunk 94, score 11.99)
+```
+
 ## How it works
 
 1. **Ingestion** (`src/ingest.py`): loads `.txt` and `.md` files and splits them into 200-word chunks with a 40-word overlap.
