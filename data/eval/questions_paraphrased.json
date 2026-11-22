@@ -1,0 +1,97 @@
+{
+  "description": "Questions written without reusing the rare words of the source passage, to test retrieval on paraphrases rather than keyword matches.",
+  "questions": [
+    {
+      "question": "Under what circumstances would Beijing's army fire the first shot?",
+      "expected": ["china_2015_MilitaryStrategy"],
+      "answer": "Never first: 'We will not attack unless we are attacked, but we will surely counterattack if attacked.'"
+    },
+    {
+      "question": "Would China ever be the first to use atomic bombs?",
+      "expected": ["china_2008_NationalDefense", "china_2010_NationalDefense", "china_2015_MilitaryStrategy", "china_2019_NationalDefense"],
+      "answer": "No: China pursues a policy of no first use of nuclear weapons."
+    },
+    {
+      "question": "Does the Pentagon still believe American soil is safe from enemies?",
+      "expected": ["us_2018_DefenseStrategy"],
+      "answer": "No: the homeland is no longer a sanctuary (terrorism, cyber attacks, political subversion)."
+    },
+    {
+      "question": "Which English-speaking spy partnership does Britain rely on?",
+      "expected": ["unitedkingdom_2017_InternationalDefenceEngagementStrategy", "unitedkingdom_2018_NationalSecurityCapabilityReview", "unitedkingdom_2022_IntegratedReview"],
+      "answer": "The Five Eyes community: UK, USA, Canada, Australia and New Zealand."
+    },
+    {
+      "question": "What share of its economic output does London pledge to spend on the military?",
+      "expected": ["unitedkingdom_2016_NationalSecurityStrategy", "unitedkingdom_2017_InternationalDefenceEngagementStrategy", "unitedkingdom_2018_NationalSecurityCapabilityReview"],
+      "answer": "2% of GDP (and 0.7% of GNI on international aid)."
+    },
+    {
+      "question": "What is wrong with the way American officers are schooled, according to the Pentagon?",
+      "expected": ["us_2018_DefenseStrategy"],
+      "answer": "Professional military education has stagnated, focused on mandatory credit at the expense of lethality and ingenuity."
+    },
+    {
+      "question": "What new approach did British ministers adopt to bring all their security tools together?",
+      "expected": ["unitedkingdom_2018_NationalSecurityCapabilityReview", "unitedkingdom_2022_IntegratedReview"],
+      "answer": "The Fusion Doctrine."
+    },
+    {
+      "question": "Which West African waters concern Madrid because of attacks on ships?",
+      "expected": ["spain_2012_NationalDefenceDirective", "spain_2013_NationalSecurityStrategy", "spain_2017_NationalSecurityStrategy", "spain_2021_NationalSecurityStrategy"],
+      "answer": "The Gulf of Guinea (piracy)."
+    },
+    {
+      "question": "Around which core missions does Paris organise its defence posture?",
+      "expected": ["france_2008_DefenceWhitePaper", "france_2013_DefenseWhitePaper", "france_2017_DefenseAndNationalSecurityStrategicReview", "france_2021_StrategicUpdate"],
+      "answer": "The strategic functions: knowledge and anticipation, deterrence, protection, prevention, intervention."
+    },
+    {
+      "question": "Which danger does France regard as the most pressing for its own people?",
+      "expected": ["france_2017_DefenseAndNationalSecurityStrategicReview"],
+      "answer": "Jihadist terrorism, directed against the homeland and population."
+    },
+    {
+      "question": "Why is Madrid worried about the European project falling apart?",
+      "expected": ["spain_2017_NationalSecurityStrategy"],
+      "answer": "Risk of EU fragmentation due to the economic crisis, Brexit and the rise of anti-EU movements."
+    },
+    {
+      "question": "Which essential goals does the 2017 American strategy commit to defend?",
+      "expected": ["us_2017_NationalSecurityStrategy"],
+      "answer": "Four vital national interests, starting with protecting the American people, the homeland and the American way of life."
+    },
+    {
+      "question": "Why does the newest American strategy want stable governments across the Americas?",
+      "expected": ["us_2025_NationalSecurityStrategy"],
+      "answer": "To prevent mass migration to the US, fight cartels and keep out hostile foreign powers."
+    },
+    {
+      "question": "Which natural disaster and sporting event marked China's year 2008?",
+      "expected": ["china_2008_NationalDefense"],
+      "answer": "The Wenchuan earthquake and the Beijing Olympic Games."
+    },
+    {
+      "question": "How does Beijing's military budget compare with Washington's?",
+      "expected": ["china_2019_NationalDefense"],
+      "answer": "Second in the world, but in 2017 less than a quarter of US spending."
+    },
+    {
+      "question": "How did Britain reinforce its troops in the Baltics after Moscow invaded its neighbour?",
+      "expected": ["unitedkingdom_2022_IntegratedReview"],
+      "answer": "It doubled the number of soldiers deployed to Estonia under NATO's enhanced Forward Presence."
+    },
+    {
+      "question": "How does Paris describe Washington's shifting priorities in its 2021 review?",
+      "expected": ["france_2021_StrategicUpdate"],
+      "answer": "The United States is torn between disengagement and rivalry with China."
+    }
+  ],
+  "off_topic": [
+    "recipe for chocolate cake",
+    "football world cup results",
+    "best pizza in Naples",
+    "stock market prices today",
+    "how to train for a marathon"
+  ]
+}
