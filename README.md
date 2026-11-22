@@ -23,6 +23,21 @@ A minimum score threshold filters off-topic questions. It was calibrated on the 
 | **8 (default)** | **86 %** | **4/5** |
 | 15 | 71 % | 5/5 |
 
+### BM25 vs dense embeddings
+
+Dense retrieval uses `BAAI/bge-small-en-v1.5` (cosine similarity); the hybrid fuses both rankings with Reciprocal Rank Fusion.
+
+| Method | Recall@3 | MRR |
+|---|---|---|
+| BM25 | **86 %** | **0.82** |
+| Dense | 64 % | 0.61 |
+| Hybrid (RRF) | 79 % | 0.65 |
+
+Embeddings recover the vocabulary-gap question BM25 misses (*keep defence costs low* vs *austerity*), and the hybrid also recovers *undersea cables*. But they miss questions that hinge on a rare term or proper noun (*Golden Dome*, *Barkhane*, *Salisbury*, *open seas protection*): a 200-word chunk embedding dilutes a single specific detail that BM25 weighs heavily.
+
+Caveat: the questions were written from keywords found in the documents, which favours lexical matching, and 14 questions is a small sample (one question = 7 points). Next step: a set of paraphrased questions, and a hybrid that weights BM25 more.
+
+
 ## Example
 
 Answers generated with Claude Haiku 5.5 from the retrieved passages.

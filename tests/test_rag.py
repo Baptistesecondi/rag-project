@@ -6,7 +6,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "src"))
 
 from evaluate import hit_rank  # noqa: E402
-from generate import build_prompt, extract_text, extractive_answer  
+from generate import build_prompt, extract_text, extractive_answer  # noqa: E402
 from ingest import Chunk, build_chunks, chunk_text  # noqa: E402
 from retrieve import BM25Index, tokenize  # noqa: E402
 
@@ -73,6 +73,65 @@ class EvaluateTests(unittest.TestCase):
         hits = [(Chunk("uk/a.txt", 0, "x"), 2.0), (Chunk("fr/b.txt", 0, "y"), 1.0)]
         self.assertEqual(hit_rank(hits, ["b.txt"]), 2)
         self.assertIsNone(hit_rank(hits, ["c.txt"]))
+
+
+def fake_encoder(texts):
+    """Deterministic stand-in for an embedding model: normalised bag of words."""
+    import numpy as np
+
+    vocab = ["stock", "prices", "market", "bread", "bake", "apples", "fruit", "sky"]
+    vectors = np.array([[t.lower().count(w) for w in vocab] for t in texts], dtype=float)
+    norms = np.linalg.norm(vectors, axis=1, keepdims=True)
+    return vectors / np.where(norms == 0, 1, norms)
+
+
+try:
+    import numpy  # noqa: F401
+
+    HAS_NUMPY = True
+except ImportError:
+    HAS_NUMPY = False
+
+
+@unittest.skipUnless(HAS_NUMPY, "numpy not installed (pip install -r requirements-dense.txt)")
+class DenseAndHybridTests(unittest.TestCase):
+    def setUp(self):
+        from dense import DenseIndex
+
+        self.chunks = [
+            Chunk("fruit.md", 0, "apples are red and sweet fruit"),
+            Chunk("markets.md", 0, "stock prices rose sharply after the report"),
+            Chunk("cooking.md", 0, "bake the bread until golden brown"),
+        ]
+        self.dense = DenseIndex(self.chunks, encoder=fake_encoder, cache_dir=None, query_prefix="")
+
+    def test_dense_ranks_most_similar_chunk_first(self):
+        hits = self.dense.search("market prices", top_k=1)
+        self.assertEqual(hits[0][0].doc_id, "markets.md")
+
+    def test_hybrid_combines_both_rankings(self):
+        from hybrid import HybridIndex
+
+        hybrid = HybridIndex(BM25Index(self.chunks), self.dense)
+        hits = hybrid.search("stock prices", top_k=2)
+        self.assertEqual(hits[0][0].doc_id, "markets.md")
+        self.assertLessEqual(len(hits), 2)
+
+    def test_dense_cache_is_reused(self):
+        import tempfile
+
+        from dense import DenseIndex
+
+        calls = []
+
+        def counting_encoder(texts):
+            calls.append(len(texts))
+            return fake_encoder(texts)
+
+        with tempfile.TemporaryDirectory() as tmp:
+            DenseIndex(self.chunks, encoder=counting_encoder, cache_dir=tmp, model_name="fake")
+            DenseIndex(self.chunks, encoder=counting_encoder, cache_dir=tmp, model_name="fake")
+        self.assertEqual(calls, [3])
 
 
 class PromptTests(unittest.TestCase):
