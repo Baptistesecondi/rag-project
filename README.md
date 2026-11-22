@@ -13,7 +13,7 @@ Retrieval is evaluated on 14 hand-written questions, each linked to the document
 | Recall@3 (correct document in the top 3) | **86 %** (12/14) |
 | Mean reciprocal rank | **0.82** |
 
-Both misses come from a vocabulary gap between question and source: the question says *undersea cables* where the document says *submarine cables*, and *keep defence costs low* where it says *austerity*. BM25 only matches exact words, which is the main motivation for comparing it with dense embeddings (see next steps).
+Both misses come from a vocabulary gap between question and source: the question says *undersea cables* where the document says *submarine cables*, and *keep defence costs low* where it says *austerity*. BM25 only matches exact words, which is the main motivation for comparing it with dense embeddings (below).
 
 A minimum score threshold filters off-topic questions. It was calibrated on the same question set:
 
@@ -99,23 +99,26 @@ Sources:
 ## How it works
 
 1. **Ingestion** (`src/ingest.py`): loads `.txt` and `.md` files and splits them into 200-word chunks with a 40-word overlap.
-2. **Retrieval** (`src/retrieve.py`): BM25 scoring (k1 = 1.5, b = 0.75) after lowercasing and removing English stop words (`src/stopwords.py`).
+2. **Retrieval**, three interchangeable methods:
+   - BM25 (`src/retrieve.py`): k1 = 1.5, b = 0.75, after lowercasing and removing English stop words (`src/stopwords.py`).
+   - Dense (`src/dense.py`): `BAAI/bge-small-en-v1.5` embeddings and cosine similarity, cached in `data/cache/`.
+   - Hybrid (`src/hybrid.py`): Reciprocal Rank Fusion of the BM25 and dense rankings.
 3. **Generation** (`src/generate.py`): builds a prompt with numbered sources and asks the model to answer only from them.
-4. **Evaluation** (`src/evaluate.py`): computes Recall@k and MRR, and sweeps the score threshold.
+4. **Evaluation** (`src/evaluate.py`): computes Recall@k and MRR for each method, and sweeps the BM25 score threshold.
 
 ## Usage
 
 Requires Python 3.10 or later.
 
 ```bash
-# Tests (14 unit tests)
+# Tests (18 unit tests)
 python -m unittest discover -s tests -v
 
 # Ask a question (shows the retrieved passages without an API key)
 python src/cli.py "Which country is the pacing challenge for the US Department of Defense?"
 
-# Evaluate retrieval
-python src/evaluate.py
+# Evaluate retrieval (BM25 only, without the optional dependencies)
+python src/evaluate.py --method bm25
 ```
 
 For written answers, install the optional dependency and set an API key:
@@ -125,12 +128,20 @@ pip install -r requirements.txt
 export ANTHROPIC_API_KEY="your_key"
 ```
 
+For dense and hybrid retrieval, install the embedding dependencies (the model, about 130 MB, downloads on first use):
+
+```bash
+pip install -r requirements-dense.txt
+python src/evaluate.py                       # compares BM25, dense and hybrid
+python src/cli.py "your question" --method hybrid
+```
+
 ## Data
 
 The documents come from the [Military Doctrines dataset](https://jandresgannon.github.io/militarydoctrines/) (J Andrés Gannon, Vanderbilt University), which collects national security strategy documents in text format.
 
 ## Next steps
 
-- Compare BM25 with dense embeddings on the same question set, and test a hybrid of both.
+- Write paraphrased questions (not reusing the documents' wording) to remove the lexical bias of the current set, and try a hybrid that weights BM25 more.
 - Extend the question set and split it into calibration and test sets.
 - Serve the pipeline as an API (FastAPI, Docker) and deploy it on AWS.
